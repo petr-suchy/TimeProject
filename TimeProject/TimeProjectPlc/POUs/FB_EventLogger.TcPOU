@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_EventLogger" Id="{6133763c-6893-4d0d-af70-1ac47f57e8bd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EventLogger
+VAR
+	aEventBuffer : ARRAY[1..MAXIMUM_SIZE_OF_EVENT_BUFFER] OF ST_Event;
+	nCurrentEventBufferIndex : INT := 0; 
+END_VAR
+VAR CONSTANT
+	MAXIMUM_SIZE_OF_EVENT_BUFFER : INT := 100;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="AddEvent" Id="{cad28719-a128-4c96-89b8-26d87b33d667}">
+      <Declaration><![CDATA[(* Returns TRUE if add was successful and FALSE if buffer is full *)
+METHOD PUBLIC AddEvent : BOOL
+VAR_INPUT
+	eEventType : E_EventType;
+	eEventSeverity : TcEventSeverity;
+	nEventIdentity : UDINT;
+	sEventText : STRING(255);
+END_VAR
+VAR
+	stNewEvent : REFERENCE TO ST_Event;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[AddEvent := FALSE;
+
+IF IsEventBufferFull() THEN
+	RETURN;
+END_IF
+
+// Allocate space for a new event in the event buffer
+nCurrentEventBufferIndex := nCurrentEventBufferIndex + 1;
+stNewEvent REF= aEventBuffer[nCurrentEventBufferIndex];
+
+stNewEvent.eEventType := eEventType;
+stNewEvent.eEventSeverity := eEventSeverity;
+stNewEvent.nEventIdentity := nEventIdentity;
+stNewEvent.sEventText := sEventText;
+stNewEvent.dtTimestamp := F_GetSystemDateAndTime();
+
+AddEvent := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsEventBufferFull" Id="{0c1a381c-8331-4785-b133-88efd57b5a7d}">
+      <Declaration><![CDATA[METHOD PUBLIC IsEventBufferFull : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsEventBufferFull := (nCurrentEventBufferIndex + 1) > MAXIMUM_SIZE_OF_EVENT_BUFFER;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_EventLogger">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventLogger.AddEvent">
+      <LineId Id="17" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventLogger.IsEventBufferFull">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

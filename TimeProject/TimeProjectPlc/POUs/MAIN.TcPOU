@@ -3,23 +3,39 @@
   <POU Name="MAIN" Id="{76ea4639-ff90-43ac-8456-dc4de8ad42a3}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	stEvent1 : ST_Event;
-	bFirstCycle : BOOL := TRUE;
+	bAddEvent : BOOL;
+	rtrigAddEvent : R_TRIG;
+	
+	eEventType : E_EventType := E_EventType.Alarm;
+	eEventSeverity : TcEventSeverity := TcEventSeverity.Error;
+	nEventIdentity : UDINT := 42;;
+	sEventText : STRING(255) := 'This is a scary event.';
+	
+	fbEventLogger : FB_EventLogger;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF bFirstCycle THEN
-	F_UpdateEventTimestampWithSystemTime(stEvent := stEvent1);
-	bFirstCycle := FALSE;
+      <ST><![CDATA[
+rtrigAddEvent(CLK := bAddEvent);
+
+IF rtrigAddEvent.Q THEN
+	fbEventLogger.AddEvent(
+		eEventType:= eEventType,
+		eEventSeverity:= eEventSeverity,
+		nEventIdentity:= nEventIdentity,
+		sEventText:= sEventText);
 END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="11" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="30" Count="3" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="34" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
