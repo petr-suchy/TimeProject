@@ -5,6 +5,7 @@
 VAR
 	aEventBuffer : ARRAY[1..MAXIMUM_SIZE_OF_EVENT_BUFFER] OF ST_Event;
 	nCurrentEventBufferIndex : INT := 0; 
+	_PersistentEventStorage : I_PersistentEventStorage;
 END_VAR
 VAR CONSTANT
 	MAXIMUM_SIZE_OF_EVENT_BUFFER : INT := 100;
@@ -41,8 +42,22 @@ stNewEvent.nEventIdentity := nEventIdentity;
 stNewEvent.sEventText := sEventText;
 stNewEvent.dtTimestamp := F_GetSystemDateAndTime();
 
+_PersistentEventStorage.StoreEvent(stEvent := stNewEvent);
+
 AddEvent := TRUE;
 ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{0c39cc05-e0ca-4348-8bc5-be770027678c}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	iPersistentEventStorage : I_PersistentEventStorage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_PersistentEventStorage := iPersistentEventStorage;]]></ST>
       </Implementation>
     </Method>
     <Method Name="IsEventBufferFull" Id="{0c1a381c-8331-4785-b133-88efd57b5a7d}">
@@ -68,10 +83,13 @@ AddEvent := TRUE;
       <LineId Id="19" Count="0" />
       <LineId Id="26" Count="0" />
       <LineId Id="28" Count="1" />
-      <LineId Id="31" Count="0" />
+      <LineId Id="31" Count="2" />
       <LineId Id="15" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EventLogger.FB_init">
+      <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_EventLogger.IsEventBufferFull">
       <LineId Id="5" Count="0" />

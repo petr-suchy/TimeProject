@@ -13,7 +13,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{6BBFCBFD-A2F9-4D31-807B-1738176C8584}" Name="TimeProjectPlc" PrjFilePath="TimeProjectPlc\TimeProjectPlc.plcproj" TmcFilePath="TimeProjectPlc\TimeProjectPlc.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F9028DE1-EFC0-9752-1BF7-CDC44088F6DE}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{85679B8D-2976-B8A4-6EAC-1578DBEB9127}">
 					<Name>TimeProjectPlc Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
