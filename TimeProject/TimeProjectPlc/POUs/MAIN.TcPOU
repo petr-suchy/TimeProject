@@ -11,8 +11,8 @@ VAR
 	nEventIdentity : UDINT := 42;;
 	sEventText : STRING(255) := 'This is a scary event.';
 	
-	fbXmlPersistentEventStorage : FB_CsvPersistentEventStorage;
-	fbEventLogger : FB_EventLogger(fbXmlPersistentEventStorage);
+	fbCsvPersistentEventStorage : FB_CsvPersistentEventStorage;
+	fbEventLogger : FB_EventLogger(fbCsvPersistentEventStorage);
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -26,6 +26,8 @@ IF rtrigAddEvent.Q THEN
 		nEventIdentity:= nEventIdentity,
 		sEventText:= sEventText);
 END_IF
+
+fbCsvPersistentEventStorage();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
@@ -36,7 +38,9 @@ END_IF
       <LineId Id="26" Count="0" />
       <LineId Id="30" Count="3" />
       <LineId Id="27" Count="0" />
+      <LineId Id="48" Count="0" />
       <LineId Id="34" Count="0" />
+      <LineId Id="49" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
